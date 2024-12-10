@@ -253,7 +253,12 @@ const DesktopView = ({ inputRef, noteContent, setNoteContent, viewMode, hasAdded
       </TouchableWithoutFeedback>
     )}
     <View style={styles.separator} />
-    <ScrollView style={styles.markdownWrapperDesktop}>
+    <ScrollView 
+      style={styles.markdownWrapperDesktop}
+      contentContainerStyle={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={true}
+      nestedScrollEnabled={true}
+      >
       <Markdown markdownit={MarkdownIt({linkify: true, typographer: true, breaks: true})} style={markdownStyles}>{noteContent}</Markdown>
     </ScrollView>
   </View>
@@ -398,18 +403,44 @@ const markdownStyles = {
     fontSize: 16,
     lineHeight: 24,
     color: '#000',
+    marginVertical: 10,  // Add vertical spacing between elements
   },
   heading1: {
-    fontSize: 24,
-    marginBottom: 8,
+    fontSize: 32,
+    marginBottom: 12,
     fontWeight: '600',
     color: '#000',
+    marginTop: 20,  // Spacing above the heading
   },
   heading2: {
+    fontSize: 28,
+    marginBottom: 10,
+    fontWeight: '500',
+    color: '#333',
+  },
+  heading3: {
+    fontSize: 24,
+    marginBottom: 8,
+    fontWeight: '500',
+    color: '#333',
+  },
+  heading4: {
     fontSize: 20,
     marginBottom: 6,
     fontWeight: '500',
-    color: '#333',
+    color: '#555',
+  },
+  heading5: {
+    fontSize: 18,
+    marginBottom: 5,
+    fontWeight: '500',
+    color: '#555',
+  },
+  heading6: {
+    fontSize: 16,
+    marginBottom: 4,
+    fontWeight: '500',
+    color: '#555',
   },
   strong: {
     fontWeight: '600',
@@ -425,6 +456,7 @@ const markdownStyles = {
     borderRadius: 4,
     fontFamily: 'monospace',
     color: '#000',
+    fontSize: 14,
   },
   blockquote: {
     borderLeftWidth: 3,
@@ -432,16 +464,21 @@ const markdownStyles = {
     paddingLeft: 10,
     marginVertical: 8,
     color: '#666',
+    fontStyle: 'italic',
+    fontSize: 16,
   },
   bullet_list: {
     paddingLeft: 20,
+    listStyleType: 'disc',
   },
   ordered_list: {
     paddingLeft: 20,
+    listStyleType: 'decimal',
   },
   list_item: {
     marginVertical: 4,
     color: '#000',
+    fontSize: 16,
   },
   link: {
     color: '#007bff',
@@ -449,15 +486,52 @@ const markdownStyles = {
   },
   hr: {
     marginVertical: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
   },
-  // Add custom styling for images
   image: {
-    width: '100%',            // Ensure image takes up full width of the parent container
-    height: '100%',              // Fixed height for the image
-    resizeMode: 'contain',    // Ensure the image is contained within the width/height constraints
-    marginVertical: 10,       // Vertical space around the image
-    position: 'static',     // Ensure image is positioned correctly inside its container
+    width: '100%', // Ensure the image is responsive
+    height: 'auto', // Maintain aspect ratio
+    marginVertical: 10,
+    alignSelf: 'center',
   },
+  table: {
+    borderCollapse: 'collapse',
+    width: '100%',
+    marginVertical: 10,
+  },
+  tableRow: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  tableCell: {
+    padding: 8,
+    border: '1px solid #ddd',
+    fontSize: 16,
+    color: '#000',
+  },
+  tableHeader: {
+    backgroundColor: '#f9f9f9',
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  footnote: {
+    fontSize: 14,
+    color: '#777',
+    fontStyle: 'italic',
+  },
+  task_list_item: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 4,
+  },
+  task_list_item_checkmark: {
+    marginRight: 10,
+  },
+  comment: {
+    display: 'none',
+  }
 };
 
 export default Note;
