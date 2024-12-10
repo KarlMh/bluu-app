@@ -1,6 +1,6 @@
 //notes.tsx
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Children } from 'react';
 import {
   TextInput,
   StyleSheet,
@@ -398,47 +398,49 @@ const styles = StyleSheet.create({
   },
 });
 
+
+
+
 const markdownStyles = {
   body: {
     fontSize: 16,
-    lineHeight: 24,
     color: '#000',
-    marginVertical: 10,  // Add vertical spacing between elements
+    marginVertical: 8,
   },
   heading1: {
-    fontSize: 32,
-    marginBottom: 12,
+    fontSize: 28,
+    marginBottom: 8,
     fontWeight: '600',
     color: '#000',
-    marginTop: 20,  // Spacing above the heading
+    marginTop: 16,
   },
   heading2: {
-    fontSize: 28,
-    marginBottom: 10,
+    fontSize: 24,
+    marginBottom: 6,
     fontWeight: '500',
     color: '#333',
   },
   heading3: {
-    fontSize: 24,
-    marginBottom: 8,
+    fontSize: 22,
+    marginBottom: 5,
     fontWeight: '500',
     color: '#333',
   },
   heading4: {
-    fontSize: 20,
-    marginBottom: 6,
+    fontSize: 18,
+    marginBottom: 4,
     fontWeight: '500',
     color: '#555',
   },
   heading5: {
-    fontSize: 18,
-    marginBottom: 5,
+    fontSize: 16,
+    marginBottom: 3,
     fontWeight: '500',
     color: '#555',
   },
   heading6: {
-    fontSize: 16,
-    marginBottom: 4,
+    fontSize: 14,
+    marginBottom: 2,
     fontWeight: '500',
     color: '#555',
   },
@@ -450,70 +452,169 @@ const markdownStyles = {
     fontStyle: 'italic',
     color: '#000',
   },
-  code: {
+  s: {
+    textDecorationLine: 'line-through',
+    color: '#000',
+  },
+  blockquote: {
+    borderLeftWidth: 2,
+    borderLeftColor: '#ccc',
+    paddingLeft: 8,
+    marginVertical: 6,
+    color: '#666',
+    fontStyle: 'italic',
+    fontSize: 15,
+  },
+  bullet_list: {
+    paddingLeft: 18,
+    listStyleType: 'disc',
+  },
+  ordered_list: {
+    paddingLeft: 18,
+    listStyleType: 'decimal',
+  },
+  list_item: {
+    marginVertical: 3,
+    color: '#000',
+    fontSize: 16,
+  },
+  ordered_list_icon: {
+    marginRight: 8,
+  },
+  ordered_list_content: {
+    fontSize: 16,
+    color: '#000',
+  },
+  bullet_list_icon: {
+    marginRight: 8,
+  },
+  bullet_list_content: {
+    fontSize: 16,
+    color: '#000',
+  },
+  code_inline: {
     backgroundColor: '#eaeaea',
-    padding: 4,
+    padding: 2,
     borderRadius: 4,
     fontFamily: 'monospace',
     color: '#000',
     fontSize: 14,
   },
-  blockquote: {
-    borderLeftWidth: 3,
-    borderLeftColor: '#ccc',
-    paddingLeft: 10,
-    marginVertical: 8,
-    color: '#666',
-    fontStyle: 'italic',
-    fontSize: 16,
-  },
-  bullet_list: {
-    paddingLeft: 20,
-    listStyleType: 'disc',
-  },
-  ordered_list: {
-    paddingLeft: 20,
-    listStyleType: 'decimal',
-  },
-  list_item: {
-    marginVertical: 4,
+  code_block: {
+    backgroundColor: '#eaeaea',
+    padding: 10,
+    borderRadius: 4,
+    fontFamily: 'monospace',
     color: '#000',
-    fontSize: 16,
+    fontSize: 14,
+    overflowX: 'auto',
   },
+  fence: {
+    backgroundColor: '#eaeaea',
+    padding: 10,
+    borderRadius: 4,
+    fontFamily: 'monospace',
+    color: '#000',
+    fontSize: 14,
+    overflowX: 'auto',
+  },
+
+
+  table: {
+    width: '100%',
+    marginVertical: 10,
+    borderCollapse: 'collapse',
+    borderSpacing: 0, // Ensures no space between cells
+    border: 'none', // Remove the outer border
+    borderWidth: 0,
+  },
+  
+  thead: {
+    backgroundColor: '#f0f0f0',
+    fontWeight: '600',
+    color: '#333',
+    padding: 12,
+    textAlign: 'center',
+    borderBottom: '2px solid #ccc', // Adds a bottom border to the header for separation
+  },
+  
+  tbody: {
+    textAlign: 'left',
+  },
+  
+  tr: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  
+  td: {
+    padding: 12,
+    fontSize: 16,
+    color: '#000',
+    textAlign: 'left',
+    verticalAlign: 'middle', // Ensures vertical alignment of text in cells
+  },
+  
+  th: {
+    padding: 12,
+    backgroundColor: '#f0f0f0',
+    fontWeight: '600',
+    color: '#333',
+    textAlign: 'center',
+    borderBottom: '2px solid #ccc', // Adds a bottom border to header cells
+  },
+  
+  // Alternating row background colors for readability
+  tableRowEven: {
+    backgroundColor: '#f9f9f9', // Light background color for even rows
+  },
+  
+  tableRowOdd: {
+    backgroundColor: '#ffffff', // Default background color for odd rows
+  },
+  
+
+  
   link: {
     color: '#007bff',
     textDecorationLine: 'underline',
   },
-  hr: {
-    marginVertical: 20,
-    borderTopWidth: 1,
-    borderTopColor: '#ccc',
+  blocklink: {
+    color: '#007bff',
+    textDecorationLine: 'underline',
   },
   image: {
-    width: '100%', // Ensure the image is responsive
-    height: 'auto', // Maintain aspect ratio
-    marginVertical: 10,
+    marginVertical: 8,
     alignSelf: 'center',
   },
-  table: {
-    borderCollapse: 'collapse',
-    width: '100%',
-    marginVertical: 10,
-  },
-  tableRow: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  tableCell: {
-    padding: 8,
-    border: '1px solid #ddd',
-    fontSize: 16,
+  text: {
     color: '#000',
   },
-  tableHeader: {
-    backgroundColor: '#f9f9f9',
-    fontWeight: 'bold',
-    color: '#333',
+  textgroup: {
+    color: '#000',
+  },
+  paragraph: {
+    marginBottom: 10,
+  },
+  hardbreak: {
+    marginBottom: 10,
+  },
+  softbreak: {
+    marginBottom: 5,
+  },
+  pre: {
+    backgroundColor: '#f4f4f4',
+    padding: 10,
+    borderRadius: 4,
+    fontFamily: 'monospace',
+    fontSize: 14,
+    overflowX: 'auto',
+  },
+  inline: {
+    color: '#000',
+  },
+  span: {
+    color: '#000',
   },
   footnote: {
     fontSize: 14,
@@ -524,14 +625,16 @@ const markdownStyles = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 4,
+    marginVertical: 3,
   },
   task_list_item_checkmark: {
-    marginRight: 10,
+    marginRight: 8,
   },
   comment: {
     display: 'none',
-  }
+  },
 };
+
+
 
 export default Note;
