@@ -254,7 +254,7 @@ const DesktopView = ({ inputRef, noteContent, setNoteContent, viewMode, hasAdded
     )}
     <View style={styles.separator} />
     <ScrollView style={styles.markdownWrapperDesktop}>
-      <Markdown markdownit={MarkdownIt({linkify: true, typographer: true, breaks: false})} style={markdownStyles}>{noteContent}</Markdown>
+      <Markdown markdownit={MarkdownIt({linkify: true, typographer: true, breaks: true})} style={markdownStyles}>{noteContent}</Markdown>
     </ScrollView>
   </View>
 );
@@ -446,6 +446,17 @@ const markdownStyles = {
   link: {
     color: '#007bff',
     textDecorationLine: 'underline',
+  },
+  hr: {
+    marginVertical: 20,
+  },
+  // Add custom styling for images
+  image: {
+    width: '100%',            // Ensure image takes up full width of the parent container
+    height: '100%',              // Fixed height for the image
+    resizeMode: 'contain',    // Ensure the image is contained within the width/height constraints
+    marginVertical: 10,       // Vertical space around the image
+    position: 'static',     // Ensure image is positioned correctly inside its container
   },
 };
 
